@@ -4,11 +4,12 @@
   "description": "Planeémoslo amigos",
   "main": "controller.js",
   "scripts": {
-    "test": "node controller.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "postgres": "^3.3.4"
   }
 }
