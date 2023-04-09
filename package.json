@@ -1,0 +1,14 @@
+{
+  "name": "planit",
+  "version": "1.0.0",
+  "description": "Planeémoslo amigos",
+  "main": "controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
