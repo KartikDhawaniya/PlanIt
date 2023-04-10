@@ -1,7 +1,6 @@
 const express = require('express');
 const process = require('process');
 const { Client } = require('pg');
-const keys = require('./config.json');
 const app = express();
 
 const client = new Client({
