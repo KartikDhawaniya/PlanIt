@@ -17,6 +17,12 @@ console.log('Connecting to Azure PostgreSQL database');
 console.log('Env variables: ')
 console.log(client);
 
+client.connect()
+    .then(() => console.log('Connected to Azure PostgreSQL database'))
+    .catch(err => console.log('Connection error', err.stack));
+
+    
+
 
 
 port = process.env.PORT || 3000;
