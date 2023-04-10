@@ -14,15 +14,6 @@ const client = new Client({
 
 console.log('Connecting to Azure PostgreSQL database');
 
-// client.connect()
-//     .then(() => {
-//         console.log('Connected to Azure PostgreSQL database');
-//         // Perform database operations here
-//     })
-//     .catch(error => {
-//         console.error('Failed to connect to Azure PostgreSQL database:', error);
-//     });
-
 console.log('Env variables: ')
 console.log(client);
 
