@@ -1,5 +1,7 @@
+drop table if exists users, payments, items, item_sponsor, events, event_items, event_host;
+
 CREATE TABLE users (
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   fname VARCHAR(255) NOT NULL,
   mname VARCHAR(255),
   lname VARCHAR(255),
@@ -11,16 +13,15 @@ CREATE TABLE users (
 
 
 CREATE TABLE events (
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   date DATE NOT NULL,
   description TEXT
 );
 
-
 CREATE TABLE items (
-  id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
 );
 
 
@@ -53,7 +54,7 @@ CREATE TABLE payments (
   receiver_id INT,
   payer_id INT,
   event_id INT,
-  item_id INT,                                 
+  item_id INT,
   amount DECIMAL(10, 2),
   pending BOOLEAN,
   PRIMARY KEY (receiver_id, payer_id, event_id, item_id),

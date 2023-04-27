@@ -1,34 +1,42 @@
 const express = require('express');
-const process = require('process');
-const { Client } = require('pg');
+const session = require('express-session');
+
 const app = express();
 
-const client = new Client({
-    host: process.env.host,
-    port: process.env.port,
-    dbname: process.env.database,
-    user: process.env.user,
-    password: process.env.password,
-    sslmode: process.env.sslmode,
-});
+const authRouter = require("./controllers/login")
 
-console.log('Connecting to Azure PostgreSQL database');
+app.use(express.json());
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:false,
+    cookie: { 
+      maxAge: oneDay
+    },
+    resave: false 
+}));
 
-console.log('Env variables: ')
-console.log(client);
-
-client.connect()
-    .then(() => console.log('Connected to Azure PostgreSQL database'))
-    .catch(err => console.log('Connection error :', err.stack));
-
-
+const process = require('process');
 port = process.env.PORT || 3000;
 
+var bodyParser = require('body-parser')
+app.use(bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
-app.get('/test/', (req, res) => {
-    res.send('Jus testing');
+app.use("/auth/", authRouter)
+
+app.get('/', (req, res) => {
+    res.send('Just testing');
 }
 );
+
+
+app.get('/events/', (req, res) => {
+    res.json({events : ["e1","e2"]});
+})
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
