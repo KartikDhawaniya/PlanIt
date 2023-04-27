@@ -53,7 +53,7 @@ router.post("/login", async (req,res) => {
     if(password===req.body.logindata.password)
     {
       req.session.authorized = true;
-      req.session.userid = req.body.ID;
+      req.session.user_id = ID;
       res.json({succes: true})
     }
     else
@@ -61,21 +61,13 @@ router.post("/login", async (req,res) => {
       res.json({succes: false, err: "incorrect password"}) 
     }
 
-    // bcrypt.compare(req.body.password, hashed_password, function(err, result) {
-    //   if(result){
-    //     req.session.authorized = true;
-    //     req.session.userid = req.body.ID;
-    //     res.json({succes: true})
-    //   }
-    //   else{
-    //     res.json({succes: false, err: "incorrect password"}) 
-    //   }
 
-    // });
+
 })
 
-router.get('/logout', async (req,res) => {
+router.post('/logout', async (req,res) => {
   console.log("destroyed")
+  
   req.session.destroy();
 });
 

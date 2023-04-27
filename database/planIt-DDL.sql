@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE events (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  date DATE NOT NULL,
+  date TIMESTAMP NOT NULL,
   description TEXT
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE items (
 
 
 CREATE TABLE item_sponsor (
-  item_id INT,
+  item_id INT,7
   sponsor_id INT,
   amount DECIMAL(10, 2) NOT NULL,
   PRIMARY KEY (item_id, sponsor_id),
