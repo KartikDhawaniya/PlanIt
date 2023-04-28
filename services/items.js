@@ -82,19 +82,20 @@ async function deleteItem(data){
 }
 
 async function updateItem(data){
+ console.log(data)
  //items
  const item_name_update_query = {
-  text: 'update items set name = $1 where item_id = $2 RETURNING *',
+  text: 'update items set name = $1 where id = $2 RETURNING *',
   values: [data.name,data.item_id],
  };
- const res = await client.query(item_insert_query)
+ const res = await client.query(item_name_update_query)
  const item_desc_update_query = {
-  text: 'update items set description = $1 where item_id = $2 RETURNING *',
+  text: 'update items set description = $1 where id = $2 RETURNING *',
   values: [data.description,data.item_id],
  };
  const res2 = await client.query(item_desc_update_query)
  const item_expense_update_query = {
-  text: 'update items set expense = $1 where item_id = $2 RETURNING *',
+  text: 'update items set expense = $1 where id = $2 RETURNING *',
   values: [data.expense,data.item_id],
  };
  const res3 = await client.query(item_expense_update_query)
@@ -105,12 +106,14 @@ async function updateItem(data){
   values: [data.item_id],
  };
  await client.query(delete_payings_query)
+
  for(let i=0;i<data.payers.length;i++){
-  const item_payment_query = {
+  const item_payings_query = {
    text: 'insert into item_payings VALUES($1, $2, $3)',
    values: [data.item_id, data.payers[i].user_id, data.payers[i].amount],
   };
-  await client.query(item_insert_query)
+  console.log(item_payings_query)
+  await client.query(item_payings_query)
  }
 
  //item_owings
@@ -121,8 +124,8 @@ async function updateItem(data){
  await client.query(delete_owings_query)
  for(let i=0;i<data.owers.length;i++){
   const item_owings_query = {
-   text: 'insert into item_payings VALUES($1, $2, $3)',
-   values: [data.item_id, data.owers.user_id, data.owers.amount],
+   text: 'insert into item_owings VALUES($1, $2, $3)',
+   values: [data.item_id, data.owers[i].user_id, data.owers[i].amount],
   };
   console.log(item_owings_query)
   await client.query(item_owings_query)
@@ -139,6 +142,7 @@ async function updateItem(data){
    text: 'insert into payments VALUES($1, $2, $3, $4)',
    values: [data.payments[i].payer_id, data.payments[i].reciever_id, data.item_id, data.payments[i].amount],
   };
+  console.log(payments_query)
   await client.query(payments_query)
  }
 }
@@ -149,23 +153,30 @@ async function getItem(data)
  const get_items_query = {
   text: "select * from"+
   " items where id=$1",
-  values: [data.event_id],
+  values: [data.item_id],
  };
  const item = await client.query(get_items_query)
 
  const get_payers = {
   text: "select * from item_payings where item_id = $1",
-  values: [data.event_id],
+  values: [data.item_id],
  };
  const payers = await client.query(get_payers)
  
  const get_owers = {
   text: "select * from item_owings where item_id = $1",
-  values: [data.event_id],
+  values: [data.item_id],
  };
  const owers = await client.query(get_owers)
 
- return {item: item.rows[0], payings: payers, owings: owers}
+ // const get_parties = {
+ //  text: "select * from  where item_id = $1",
+ //  values: [data.item_id],
+ // };
+ // const parties = await client.query(get_parties)
+
+ 
+ return {item: item.rows[0], payings: payers.rows, owings: owers.rows}
 }
 
 module.exports = {addItem, getItems, deleteItem, updateItem, getItem}
