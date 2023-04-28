@@ -16,30 +16,42 @@ CREATE TABLE events (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   date TIMESTAMP NOT NULL,
-  description TEXT
+  description TEXT,
+  completed BOOL NOT NULL 
 );
 
 CREATE TABLE items (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL
+  name VARCHAR(63) NOT NULL,
+  description VARCHAR(255) NOT NULL,  
+  expense int
 );
 
 
-CREATE TABLE item_sponsor (
-  item_id INT,7
-  sponsor_id INT,
-  amount DECIMAL(10, 2) NOT NULL,
-  PRIMARY KEY (item_id, sponsor_id),
+CREATE TABLE item_payings (
+  item_id INT,
+  payer_id INT,
+  amount INT NOT NULL,
+  PRIMARY KEY (item_id, payer_id),
   FOREIGN KEY (item_id) REFERENCES items(id),
-  FOREIGN KEY (sponsor_id) REFERENCES users(id)
+  FOREIGN KEY (payer_id) REFERENCES users(id)
 );
 
-CREATE TABLE event_host (
+CREATE TABLE item_owings (
+  item_id INT,
+  ower_id INT,
+  amount INT NOT NULL,
+  PRIMARY KEY (item_id, ower_id),
+  FOREIGN KEY (item_id) REFERENCES items(id),
+  FOREIGN KEY (ower_id) REFERENCES users(id)
+);
+
+CREATE TABLE event_participant (
   event_id INT,
-  host_id INT,
-  PRIMARY KEY (event_id, host_id),
+  participant_id INT,
+  PRIMARY KEY (event_id, participant_id),
   FOREIGN KEY (event_id) REFERENCES events(id),
-  FOREIGN KEY (host_id) REFERENCES users(id)
+  FOREIGN KEY (participant_id) REFERENCES users(id)
 );
 
 CREATE TABLE event_items (

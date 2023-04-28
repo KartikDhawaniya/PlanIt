@@ -4,12 +4,11 @@ async function getEvents(data) {
 
  if(data.user_id)
  {
-  // console.log("select * from events inner join event_host where event_id == id and user_id="+data.user_id+"")
   const events = await client.query(
    "select * from "+
-   "events inner join event_host"+
-   " on event_host.event_id = events.id "+
-   "and event_host.host_id="+data.user_id)
+   "events inner join event_participant"+
+   " on event_participant.event_id = events.id "+
+   "and event_participant.participant_id="+data.user_id)
   console.log('Events associated with user ' +data.user_id+ ':', events.rows);
   return events.rows
  }
@@ -23,7 +22,7 @@ async function addEvent(data){
  {
   const event = data.event
   const event_insert_query = {
-   text: 'INSERT INTO events(name, date, description) VALUES($1, $2, $3) RETURNING *',
+   text: 'INSERT INTO events(name, date, description,completed) VALUES($1, $2, $3, false) RETURNING *',
    values: [event.name, event.date, event.description],
   };
   
@@ -32,7 +31,7 @@ async function addEvent(data){
   
   // console.log(event_id)
   const user_insert_query = {
-   text: 'INSERT INTO event_host(event_id, host_id) VALUES($1, $2) RETURNING *',
+   text: 'INSERT INTO event_participant(event_id, participant_id) VALUES($1, $2) RETURNING *',
    values: [res.rows[0].id, data.user_id],
   };
 
@@ -42,4 +41,15 @@ async function addEvent(data){
  }
  return {}
 }
-module.exports = {addEvent,getEvents}
+
+async function getEventDetails(data)
+{
+ const event_details_query = {
+  text: 'select * from events where id=$1 ',
+  values: [data.event_id],
+ };
+ const res = await client.query(event_details_query)
+ return res.rows[0]
+}
+
+module.exports = {addEvent,getEvents, getEventDetails}
