@@ -33,7 +33,7 @@ CREATE TABLE item_payings (
   payer_id INT,
   amount INT NOT NULL,
   PRIMARY KEY (item_id, payer_id),
-  FOREIGN KEY (item_id) REFERENCES items(id),
+  FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
   FOREIGN KEY (payer_id) REFERENCES users(id)
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE item_owings (
   ower_id INT,
   amount INT NOT NULL,
   PRIMARY KEY (item_id, ower_id),
-  FOREIGN KEY (item_id) REFERENCES items(id),
+  FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE, 
   FOREIGN KEY (ower_id) REFERENCES users(id)
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE event_items (
   item_id INT,
   PRIMARY KEY (event_id, item_id),
   FOREIGN KEY (event_id) REFERENCES events(id),
-  FOREIGN KEY (item_id) REFERENCES items(id)
+  FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
 CREATE TABLE payments (
@@ -73,5 +73,5 @@ CREATE TABLE payments (
   FOREIGN KEY (receiver_id) REFERENCES users(id),
   FOREIGN KEY (payer_id) REFERENCES users(id),
   -- FOREIGN KEY (event_id) REFERENCES events(id),
-  FOREIGN KEY (item_id) REFERENCES items(id)
+  FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );

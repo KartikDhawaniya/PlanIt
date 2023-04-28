@@ -5,6 +5,7 @@ const app = express();
 
 const authRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
+const itemRouter = require("./controllers/items")
 
 app.use(express.json());
 const oneDay = 1000 * 60 * 60 * 24;
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use("/auth/", authRouter)
 app.use("/events/", eventRouter)
+app.use("/items/", itemRouter)
 
 app.get('/', (req, res) => {
     res.send('Just testing');
@@ -44,7 +46,4 @@ app.listen(port, "192.168.0.105",() => {
     console.log(`Server running on port ${port} `);
 }
 );
-
-
-
 

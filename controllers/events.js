@@ -13,7 +13,7 @@ router.get("/", validateToken, async (req,res) => {
 
  response = await getEvents({user_id:req.session.user_id})
 
- res.json(response)
+ res.json({ eventsList : response})
 })
 
 router.get("/event/:eventID", validateToken, async (req,res) => {
@@ -26,21 +26,17 @@ router.get("/event/:eventID", validateToken, async (req,res) => {
 router.get("/participants/:eventID", validateToken, async (req,res) => {
  console.log(req.params)
  response = await getParticipants({event_id: Number(req.params.eventID)})
- res.json(response)
+ res.json({participants : response})
 })
 
 router.get("/items/:eventID", validateToken, async (req,res) => {
  console.log(req.params)
  response = await getItems({event_id: Number(req.params.eventID)})
- res.json(response)
+ res.json({items : response})
 })
 
 router.post("/create", validateToken, async (req,res) => {
- // console.log(req.body)
-
-
  response = await addEvent({ user_id:req.session.user_id, event: req.body.eventdata })
-
  res.json(response)
 })
 
