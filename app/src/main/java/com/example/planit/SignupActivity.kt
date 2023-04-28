@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import io.github.cdimascio.dotenv.Dotenv
 import org.json.JSONObject
 import java.net.CookieHandler
 import java.net.CookieManager
@@ -38,9 +39,10 @@ class SignupActivity : AppCompatActivity() {
         middlenameEditText = findViewById(R.id.middlenameEditText)
         mobileEditText = findViewById(R.id.mobileEditText)
 
-        val queue = Volley.newRequestQueue(this)
-        val cookieManager = CookieManager()
-        CookieHandler.setDefault(cookieManager)
+        val queue = VolleySingleton.getInstance(this).requestQueue
+
+//        val dotenv = Dotenv.configure().directory("/app/src/main/assets").filename(".env").load()
+//        val apiBaseUrl = dotenv["API_URL"]
 
         signupButton.setOnClickListener {
             val email = emailEditText.text.toString()

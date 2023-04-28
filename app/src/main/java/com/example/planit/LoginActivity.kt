@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import io.github.cdimascio.dotenv.Dotenv
 import org.json.JSONObject
 import java.net.CookieHandler
 import java.net.CookieManager
@@ -32,13 +33,16 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.loginButton)
         signupButton = findViewById(R.id.signupTextView)
 
-        val queue = Volley.newRequestQueue(this)
-        val cookieManager = CookieManager()
-        CookieHandler.setDefault(cookieManager)
+
+
+//        val dotenv = Dotenv.configure().directory("/app/src/main/assets").filename(".env").load()
+//        val apiBaseUrl = dotenv["API_URL"]
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
+            val queue = VolleySingleton.getInstance(this).requestQueue
+
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
 
@@ -64,11 +68,13 @@ class LoginActivity : AppCompatActivity() {
 
                         if (response.getBoolean("succes")) {
                             startHomeActivity()
+                            finish()
                         }
                     },
                     { error ->
-                        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
                         Log.e("LoginActivity", error.message.toString())
+                        error.printStackTrace()
                         }
                 )
 
