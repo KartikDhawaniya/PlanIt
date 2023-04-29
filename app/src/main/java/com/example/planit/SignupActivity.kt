@@ -68,7 +68,8 @@ class SignupActivity : AppCompatActivity() {
 
                 val reqJson = JSONObject(reqstr)
 
-                val url = "http://192.168.0.105:8080/auth/signup/"
+                val uriObj = BaseUrl()
+                val url = uriObj.url + "/auth/signup/"
 
                 val signupRequest = JsonObjectRequest(
                     Request.Method.POST,

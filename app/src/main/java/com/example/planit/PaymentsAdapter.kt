@@ -45,7 +45,8 @@ class PaymentsAdapter(private val paymentList: MutableList<Payment>, private val
     private fun settlePayment(payment: Payment)
     {
         val pos = paymentList.indexOf(payment)
-        val url = "http://192.168.0.105:8080/payments/settle"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/payments/settle"
         val reqstr = """
             {
                 "other_id": ${payment.payeeId},

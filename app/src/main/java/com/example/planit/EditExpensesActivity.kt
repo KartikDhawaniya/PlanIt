@@ -107,7 +107,8 @@ class EditExpensesActivity : AppCompatActivity() {
 
     private fun updateItem( item: JSONObject)
     {
-        val url = "http://192.168.0.105:8080/items/$itemId/update"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/items/$itemId/update"
 
         var updateItemRequest = JsonObjectRequest(
             Request.Method.POST, url, item,
@@ -129,7 +130,8 @@ class EditExpensesActivity : AppCompatActivity() {
 
 
     private fun fetchItem() {
-        val url = "http://192.168.0.105:8080/items/item/$itemId"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/items/item/$itemId"
 
         val eventRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
@@ -194,7 +196,8 @@ class EditExpensesActivity : AppCompatActivity() {
     }
 
     private fun fetchParties() {
-        val url = "http://192.168.0.105:8080/events/participants/$eventId"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/events/participants/$eventId"
 
         val eventRequest = JsonObjectRequest(
             Request.Method.GET, url, null,

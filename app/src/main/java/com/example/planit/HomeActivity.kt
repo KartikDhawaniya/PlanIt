@@ -81,7 +81,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val url = "http://192.168.0.105:8080/auth/logout"
+        val uriObj = BaseUrl()
+        val url = uriObj.url +  "/auth/logout"
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, null,
             { response ->

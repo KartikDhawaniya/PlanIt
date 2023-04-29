@@ -86,7 +86,8 @@ class PaymentsFragment : Fragment() {
     }
 
     private fun fetchPayments() {
-        val url = "http://192.168.0.105:8080/payments"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/payments"
 
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,

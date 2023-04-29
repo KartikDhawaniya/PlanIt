@@ -97,7 +97,8 @@ class EventItemsFragment( private val eventId: Int) : Fragment() {
     }
 
     private fun getItems() {
-        val url = "http://192.168.0.105:8080/events/items/${eventId}"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/events/items/${eventId}"
         val eventItemsRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->
@@ -173,7 +174,8 @@ class EventItemsFragment( private val eventId: Int) : Fragment() {
 
 
     private fun createItem(name: String, desc: String, expense: String) {
-        val url = "http://192.168.0.105:8080/items/create"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/items/create"
 
         val reqstr = """
             {

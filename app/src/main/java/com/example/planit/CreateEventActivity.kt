@@ -55,8 +55,8 @@ class CreateEventActivity : AppCompatActivity() {
                 """.trimIndent()
 
                 val reqJson = JSONObject(reqstr)
-
-                val url = "http://192.168.0.105:8080/events/create"
+                val uriObj = BaseUrl()
+                val url = uriObj.url + "/events/create"
 
                 val req = JsonObjectRequest(
                     Request.Method.POST, url, reqJson,

@@ -119,7 +119,8 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
     }
 
     private fun fetchEventParticipants() {
-        val url = "http://192.168.0.105:8080/events/participants/$eventId"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/events/participants/$eventId"
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->
@@ -156,7 +157,8 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
 
     private fun addParticipant( email: String)
     {
-        val url = "http://192.168.0.105:8080/events/addparty/$eventId"
+        val uriObj = BaseUrl()
+        val url = uriObj.url +  "/events/addparty/$eventId"
 
         val reqstr = "{\"email\":\"$email\"}"
 

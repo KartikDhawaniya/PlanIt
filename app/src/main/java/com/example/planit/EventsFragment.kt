@@ -97,8 +97,8 @@ class EventsFragment : Fragment() {
 
         val queue = VolleySingleton.getInstance(mContext).requestQueue
 
-
-        val url = "http://192.168.0.105:8080/events/"
+        val uriObj = BaseUrl()
+        val url = uriObj.url + "/events/"
         val eventRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->

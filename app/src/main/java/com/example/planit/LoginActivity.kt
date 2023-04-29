@@ -57,7 +57,8 @@ class LoginActivity : AppCompatActivity() {
 
                 val reqJson = JSONObject(reqstr)
 
-                val url = "http://192.168.0.105:8080/auth/login/"
+                val uriObj = BaseUrl()
+                val url = uriObj.url +  "/auth/login/"
 
                 val loginRequest = JsonObjectRequest(
                     Request.Method.POST,
