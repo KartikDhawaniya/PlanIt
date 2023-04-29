@@ -26,7 +26,12 @@ class ItemExpensesAdapter(private val itemExpenseDistributionList: List<ItemExpe
         holder.payedTextView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 var pos = holder.adapterPosition
-                itemExpenseDistributionList[pos].payed = s.toString().toDouble()
+                if (s.toString() == "") {
+                    itemExpenseDistributionList[pos].payed = 0.0
+                }
+                else {
+                    itemExpenseDistributionList[pos].payed = s.toString().toDouble()
+                }
                 Log.e("ItemExpensesAdapter", "itemExpenseDistributionList[pos].payed: ${itemExpenseDistributionList[pos].payed}")
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -39,7 +44,12 @@ class ItemExpensesAdapter(private val itemExpenseDistributionList: List<ItemExpe
         holder.owedTextView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 var pos = holder.adapterPosition
-                itemExpenseDistributionList[pos].owed = s.toString().toDouble()
+                if (s.toString() == "") {
+                    itemExpenseDistributionList[pos].owed = 0.0
+                }
+                else {
+                    itemExpenseDistributionList[pos].owed = s.toString().toDouble()
+                }
                 Log.e("ItemExpensesAdapter", "itemExpenseDistributionList[pos].owed: ${itemExpenseDistributionList[pos].owed}")
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
