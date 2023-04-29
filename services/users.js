@@ -7,6 +7,7 @@ async function getId(data) {
   const user = await client.query(
    "select * from "+
    "users where email = '"+data.email+"'")
+  if(user.rows.length>0)
   return user.rows[0].id
  }
  else if(data.mobileno)
@@ -14,9 +15,9 @@ async function getId(data) {
   const user = await client.query(
    "select * from "+
    "users where mobile = '"+data.mobileno+"'")
-  return user.rows[0].id 
+  if(user.rows.length>0)
+   return user.rows[0].id 
  }
- return -1
 }
 
 

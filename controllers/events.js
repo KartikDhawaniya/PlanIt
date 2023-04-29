@@ -64,14 +64,16 @@ router.post("/addparty/:eventID", validateToken, async (req,res) => {
  {
   new_user_id=await getId({email: req.body.email})
  }
+ if(new_user_id)
+ {
+  response = await addParicipant({
+   event_id: Number(req.params.eventID),
+   user_id: new_user_id
+  })
  
- 
- response = await addParicipant({
-  event_id: Number(req.params.eventID),
-  user_id: new_user_id
- })
-
- res.json(response)
+  return res.json(response)
+ }
+ return res.json({success: false, msg : "user does not exist"})
 })
 
 

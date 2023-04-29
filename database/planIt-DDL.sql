@@ -63,8 +63,8 @@ CREATE TABLE event_items (
 );
 
 CREATE TABLE payments (
-  payer_id INT,
-  receiver_id INT,
+  payer_id INT NOT NULL,
+  receiver_id INT NOT NULL,
   item_id INTEGER,
   amount INTEGER,
   FOREIGN KEY (receiver_id) REFERENCES users(id),

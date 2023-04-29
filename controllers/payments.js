@@ -28,9 +28,9 @@ router.post("/settle", validateToken, async (req,res) =>{
     amount: req.body.amount
    })
   }
-  res.json({success:true})
+  return res.json({success:true})
  }
- res.json({success:false, msg:"other_id/amount not provided"})
+ return res.json({success:false, msg:"other_id/amount not provided"})
 })
 
 module.exports = router

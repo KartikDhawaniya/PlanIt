@@ -5,9 +5,10 @@ async function addPayment(data) {
  const event = data.event
  const payment_insert_query = {
   text: 'INSERT INTO payments(payer_id, receiver_id, amount) VALUES($1, $2, $3) RETURNING *',
-  values: [data.payer_id, data.reciever_id, data.amount],
+  values: [data.payer_id, data.receiver_id, data.amount],
  };
  
+
  const res = await client.query(payment_insert_query)
  // console.log('Event added successfully:', res.rows[0]);
 }
