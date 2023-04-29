@@ -6,6 +6,7 @@ const app = express();
 const authRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
 const itemRouter = require("./controllers/items")
+const paymentRouter = require("./controllers/payments")
 
 app.use(express.json());
 const oneDay = 1000 * 60 * 60 * 24;
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use("/auth/", authRouter)
 app.use("/events/", eventRouter)
 app.use("/items/", itemRouter)
+app.use("/payments/", paymentRouter)
 
 app.get('/', (req, res) => {
     res.send('Just testing');

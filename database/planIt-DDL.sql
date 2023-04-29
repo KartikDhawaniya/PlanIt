@@ -1,4 +1,4 @@
-drop table if exists users, payments, items, item_sponsor, events, event_items, event_host;
+drop table if exists users, payments, items, item_owings, item_payings, events, event_items, event_participant, test;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -65,13 +65,9 @@ CREATE TABLE event_items (
 CREATE TABLE payments (
   payer_id INT,
   receiver_id INT,
-  -- event_id INT,
-  item_id INT,
+  item_id INTEGER,
   amount INTEGER,
-  -- pending BOOLEAN,
-  PRIMARY KEY (receiver_id, payer_id, item_id),
   FOREIGN KEY (receiver_id) REFERENCES users(id),
   FOREIGN KEY (payer_id) REFERENCES users(id),
-  -- FOREIGN KEY (event_id) REFERENCES events(id),
-  FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
+  FOREIGN KEY (item_id) REFERENCES items(id) on delete cascade
 );

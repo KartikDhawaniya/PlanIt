@@ -67,7 +67,7 @@ function paymentcreate(data)
 
 router.get("/item/:itemID", validateToken, async (req,res) => {
  
- console.log("get req for ", req.params.itemID)
+ // console.log("get req for ", req.params.itemID)
  response = await getItem({item_id: req.params.itemID})
 
  res.json(response)
@@ -82,7 +82,7 @@ router.post("/create", validateToken, async (req,res) => {
   expense: req.body.expense,
   event_id: req.body.event_id,
   user_id: req.session.user_id,
- } 
+ }
 
  response = await addItem(param)
 
@@ -109,23 +109,23 @@ router.post("/:itemID/update", validateToken, async (req,res) => {
  console.log(param.payments)
  response = await updateItem(param)
 
- res.json()
+ res.json({success:true})
 })
 
 router.post("/:itemID/delete", validateToken, async (req,res) => {
- console.log(req.body)
+ // console.log(req.body)
 
- const param = {
-  name: req.body.name,
-  description: req.body.descr,
-  expense: req.body.expense,
-  event_id: req.body.event_id,
-  user_id: req.session.user_id,
- }
+ // const param = {
+ //  name: req.body.name,
+ //  description: req.body.descr,
+ //  expense: req.body.expense,
+ //  event_id: req.body.event_id,
+ //  user_id: req.session.user_id,
+ // }
 
- response = await addItem(param)
+ response = await deleteItem({item_id:req.params.itemID})
 
- res.json({ new_item : response})
+ res.json({success: true})
 })
 
 module.exports = router

@@ -52,4 +52,14 @@ async function getEventDetails(data)
  return res.rows[0]
 }
 
-module.exports = {addEvent,getEvents, getEventDetails}
+async function markEventAsCompleted(data)
+{
+ const event_details_query = {
+  text: 'update events set completed=true where id = $1 RETURNING *',
+  values: [data.event_id],
+ };
+ const res = await client.query(event_details_query)
+ return res.rows[0]
+}
+
+module.exports = {addEvent,getEvents, getEventDetails, markEventAsCompleted}

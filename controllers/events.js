@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {validateToken} = require("./middlewares/loginMiddleware")
-const {addEvent,getEvents,getEventDetails} = require("../services/events")
+const {addEvent,getEvents,getEventDetails,markEventAsCompleted} = require("../services/events")
 const {addParicipant, getParticipants, removeParticipant} = require("../services/participants")
 const {addItem, getItems, deleteItem, updateItem} = require("../services/items")
 const {getId} = require("../services/users")
@@ -15,6 +15,15 @@ router.get("/", validateToken, async (req,res) => {
 
  res.json({ eventsList : response})
 })
+
+router.post("/mark/:eventID", validateToken, async (req,res) => {
+ console.log(req.params.eventID)
+
+ response = await markEventAsCompleted({event_id: req.params.eventID})
+
+ res.json(express.response)
+})
+
 
 router.get("/event/:eventID", validateToken, async (req,res) => {
  console.log(req.params)
