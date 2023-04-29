@@ -1,18 +1,26 @@
 package com.example.planit
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,7 +70,13 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
         addItemButton = view.findViewById(R.id.addEventItemButton)
         removeItemsButton = view.findViewById(R.id.deleteEventItemButton)
 
-//        addItemButton = view.findViewById(R.id.addItemButton)
+        addItemButton = view.findViewById(R.id.addEventItemButton)
+        removeItemsButton = view.findViewById(R.id.deleteEventItemButton)
+
+        addItemButton.setOnClickListener {
+            popupItemCreator()
+        }
+
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
 
@@ -71,10 +85,13 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
             fetchEventParticipants()
             swipeRefreshLayout.isRefreshing = false
         }
-
+        Log.e("Id--------", eventId.toString())
         fetchEventParticipants()
         return view
     }
+
+
+
 
     override fun onResume() {
         super.onResume()
@@ -102,12 +119,30 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
     }
 
     private fun fetchEventParticipants() {
-        val url = "http://192.16.0.105:8080/events/participants/$eventId"
+        val url = "http://192.168.0.105:8080/events/participants/$eventId"
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             { response ->
                 Log.e("Response", response.toString())
                 Log.e("Id Response", eventId.toString())
+                if ( response.has("participants") ) {
+                    val participants = response.getJSONArray("participants")
+                    val participantsList = mutableListOf<Participant>()
+                    for (i in 0 until participants.length()) {
+                        val participante = participants.getJSONObject(i)
+                        val participantId = participante.getInt("participant_id")
+                        val participantName = participante.getString("fname") + " " + participante.getString("lname")
+                        val participant = Participant(participantId, participantName)
+                        participantsList.add(participant)
+                    }
+                    adapter = ParticipantsAdapter(participantsList, mContext)
+                    recyclerView.adapter = adapter
+                }
+                else {
+                    val participantsList = mutableListOf<Participant>()
+                    adapter = ParticipantsAdapter(participantsList, mContext)
+                    recyclerView.adapter = adapter
+                }
             },
             { error ->
                 Log.e("Error", error.toString())
@@ -117,5 +152,58 @@ class EventParticipantsFragment( private val eventId: Int) : Fragment() {
 
         val queue = VolleySingleton.getInstance(mContext).requestQueue
         queue.add(request)
+    }
+
+    private fun addParticipant( email: String)
+    {
+        val url = "http://192.168.0.105:8080/events/addparty/$eventId"
+
+        val reqstr = "{\"email\":\"$email\"}"
+
+        val reqJson = JSONObject(reqstr)
+
+        val addPartyRequest = JsonObjectRequest(
+            Request.Method.POST, url, reqJson,
+            { response ->
+                Log.e("Response", response.toString())
+                Log.e("Id Response", eventId.toString())
+
+            },
+            { error ->
+                Log.e("Error", error.toString())
+                Log.e("Id Error", eventId.toString())
+            }
+        )
+
+        val queue = VolleySingleton.getInstance(mContext).requestQueue
+        queue.add(addPartyRequest)
+
+    }
+
+    private fun popupItemCreator() {
+        val inflater = LayoutInflater.from(context)
+        val popupView = inflater.inflate(R.layout.popup_add_participant, null)
+
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        popupWindow.isFocusable = true
+
+        val emailInput = popupView.findViewById<EditText>(R.id.editTextEmail)
+        val addButton = popupView.findViewById<Button>(R.id.buttonSave)
+        val cancelButton = popupView.findViewById<Button>(R.id.buttonCancel)
+
+        addButton.setOnClickListener {
+            val email = emailInput.text.toString()
+            addParticipant(email)
+            fetchEventParticipants()
+            // refresh the fragment
+
+            popupWindow.dismiss()
+        }
+
+        cancelButton.setOnClickListener {
+            popupWindow.dismiss()
+        }
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
     }
 }

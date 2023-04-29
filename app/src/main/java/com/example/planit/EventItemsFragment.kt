@@ -118,7 +118,7 @@ class EventItemsFragment( private val eventId: Int) : Fragment() {
                         )
                         itemsList.add(item)
                     }
-                    adapter = ItemsAdapter(itemsList, mContext)
+                    adapter = ItemsAdapter(itemsList, mContext, eventId)
                     recyclerView.adapter = adapter
 
                 }
@@ -157,7 +157,7 @@ class EventItemsFragment( private val eventId: Int) : Fragment() {
             val expense = expenseInput.text.toString()
 
             createItem(name, desc, expense)
-
+            getItems()
             popupWindow.dismiss()
         }
 

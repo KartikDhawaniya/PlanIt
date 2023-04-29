@@ -1,6 +1,8 @@
 package com.example.planit
 
+import android.content.ClipData.newIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemsAdapter (private val itemList: List<Item>, private val mContext: Context) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter (private val itemList: List<Item>, private val mContext: Context, private val eventId: Int) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_item, parent, false)
@@ -27,6 +29,9 @@ class ItemsAdapter (private val itemList: List<Item>, private val mContext: Cont
             holder.checkBox.isChecked = holder.checkBox.isChecked
             itemList[position].isChecked = holder.checkBox.isChecked
             Log.e("ItemAdapter", "itemList[position].isChecked: ${getCheckedItems()}")
+        }
+        holder.linearLayoutButton.setOnClickListener{
+            startEditExpensesActivity(item.id, eventId)
         }
     }
 
@@ -51,6 +56,15 @@ class ItemsAdapter (private val itemList: List<Item>, private val mContext: Cont
         }
         return checkedItems
     }
+
+    private fun startEditExpensesActivity(itemId: Int, eventId: Int) {
+        val intent = Intent(mContext, EditExpensesActivity::class.java).apply {
+            putExtra("itemId", itemId)
+            putExtra("eventId", eventId)
+        }
+        mContext.startActivity(intent)
+    }
+
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)

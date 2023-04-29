@@ -1,5 +1,6 @@
 package com.example.planit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,6 +9,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.navigation.NavigationView
 
 class HomeActivity : AppCompatActivity() {
@@ -42,6 +45,11 @@ class HomeActivity : AppCompatActivity() {
                     replaceFragment(PaymentsFragment())
                     true
                 }
+                R.id.nav_logout -> {
+                    logout()
+                    startLoginActivity()
+                    true
+                }
                 else -> {
                     false
                 }
@@ -70,5 +78,27 @@ class HomeActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
+    }
+
+    private fun logout() {
+        val url = "http://192.168.0.105:8080/auth/logout"
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST, url, null,
+            { response ->
+                Toast.makeText(this, "Logout successful ${response.toString()}", Toast.LENGTH_SHORT).show()
+                startLoginActivity()
+            },
+            { error ->
+                Toast.makeText(this, "Logout failed ${error.toString()}", Toast.LENGTH_SHORT).show()
+            }
+        )
+
+        val queue = VolleySingleton.getInstance(this).requestQueue
+        queue.add(jsonObjectRequest)
+    }
+
+    private fun startLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }
